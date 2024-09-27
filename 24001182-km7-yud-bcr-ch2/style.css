@@ -1,0 +1,36 @@
+* {
+  /* border: 1px solid red; */
+}
+
+.testimonial .card {
+  width: 619px;
+  background: #f1f3ff;
+}
+.carousel {
+  width: 50%;
+}
+@media (max-width: 576px) {
+  .img-hero img {
+    width: 344.22px;
+    height: 199px;
+    top: 458px;
+    left: 16px;
+    gap: 0px;
+    opacity: 0px;
+  }
+  .our-service img {
+    width: 252px;
+    height: 228px;
+    top: 717px;
+    left: 54px;
+    gap: 0px;
+    opacity: 0px;
+  }
+  .testimonial .card {
+    width: 328px;
+  }
+  .carousel {
+    width: 100%;
+    
+  }
+}
