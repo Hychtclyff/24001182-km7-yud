@@ -7,7 +7,7 @@ const fileUpload = require("express-fileupload"); // This package is to enable r
 
 /* Make/initiate expess application */
 const app = express();
-const port = 4000;
+const port = process.env.PORT || 4000;
 
 /* We need to activate body parser/reader */
 app.use(express.json());
