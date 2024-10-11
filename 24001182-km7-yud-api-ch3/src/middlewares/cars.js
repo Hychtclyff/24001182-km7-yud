@@ -39,7 +39,18 @@ exports.validateGetCarById = (req, res, next) => {
   next();
 };
 
+function toBoolean(str) {
+  return str === "true"; // Kembalikan true jika str "true", dan false jika "false"
+}
+
 exports.validateCreateCar = (req, res, next) => {
+  req.body.capacity = parseInt(req.body.capacity);
+  req.body.rentPerDay = parseInt(req.body.rentPerDay);
+  req.body.available = toBoolean(req.body.available);
+  req.body.availableAt = req.body.availableAt = new Date(
+    req.body.availableAt
+  ).toISOString();
+
   // Validation body schema
   const validateBody = z.object({
     // id: z.string().uuid(),
@@ -54,22 +65,48 @@ exports.validateCreateCar = (req, res, next) => {
     transmission: z.enum(["Automatic", "Manual"]), // Jenis transmisi hanya bisa "Automatic" atau "Manual"
     available: z.boolean(), // Ketersediaan berupa boolean
     type: z.string().min(1), // Tipe kendaraan tidak boleh kosong
-    year: z.number().int(), // Tahun berupa angka bulat
-    options: z.array(z.string()).nonempty().optional(), // Array dari opsi dengan minimal 1 item
-    specs: z.array(z.string()).nonempty(), // Array dari spesifikasi dengan minimal 1 item
+    year: z.string(), // Tahun berupa angka bulat
+    options: z.array(z.string()).nullable().optional(), // Array dari opsi dengan minimal 1 item
+    specs: z.array(z.string()).nullable().optional(), // Array dari spesifikasi dengan minimal 1 item
   });
 
-  //     // Validate
+  const validateFileBody = z
+    .object({
+      image: z
+        .object({
+          name: z.string(),
+          data: z.any(),
+        })
+        .nullable()
+        .optional(),
+    })
+    .nullable()
+    .optional();
+
+  // Validate
   const result = validateBody.safeParse(req.body);
   if (!result.success) {
     // If validation fails, return error messages
     throw new BadRequestError(result.error.errors);
   }
 
+  // Validate
+  const resultValidateFiles = validateFileBody.safeParse(req.files);
+  if (!resultValidateFiles.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(resultValidateFiles.error.errors);
+  }
+
   next();
 };
 
 exports.validateUpdateCar = (req, res, next) => {
+  req.body.capacity = parseInt(req.body.capacity);
+  req.body.rentPerDay = parseInt(req.body.rentPerDay);
+  req.body.available = toBoolean(req.body.available);
+  req.body.availableAt = req.body.availableAt = new Date(
+    req.body.availableAt
+  ).toISOString();
   // zod validation
   const validateParams = z.object({
     id: z.string(),
@@ -83,6 +120,7 @@ exports.validateUpdateCar = (req, res, next) => {
 
   // Validation body schema
   const validateBody = z.object({
+    // id: z.string().uuid(),
     plate: z.string(), // Minimal harus ada satu karakter pada plat nomor
     manufacture: z.string(), // Nama manufaktur harus ada
     model: z.string(), // Nama model harus ada
@@ -94,16 +132,37 @@ exports.validateUpdateCar = (req, res, next) => {
     transmission: z.enum(["Automatic", "Manual"]), // Jenis transmisi hanya bisa "Automatic" atau "Manual"
     available: z.boolean(), // Ketersediaan berupa boolean
     type: z.string().min(1), // Tipe kendaraan tidak boleh kosong
-    year: z.number().int(), // Tahun berupa angka bulat
-    options: z.array(z.string()).nonempty().optional(), // Array dari opsi dengan minimal 1 item
-    specs: z.array(z.string()).nonempty(), // Array dari spesifikasi dengan minimal 1 item
+    year: z.string(), // Tahun berupa angka bulat
+    options: z.array(z.string()).nullable().optional(), // Array dari opsi dengan minimal 1 item
+    specs: z.array(z.string()).nullable().optional(), // Array dari spesifikasi dengan minimal 1 item
   });
+
+  // The file is not required
+  const validateFileBody = z
+    .object({
+      profilePicture: z
+        .object({
+          name: z.string(),
+          data: z.any(),
+        })
+        .nullable()
+        .optional(),
+    })
+    .nullable()
+    .optional();
 
   // Validate
   const resultValidateBody = validateBody.safeParse(req.body);
   if (!resultValidateBody.success) {
     // If validation fails, return error messages
     throw new BadRequestError(resultValidateBody.error.errors);
+  }
+
+  // Validate
+  const resultValidateFiles = validateFileBody.safeParse(req.files);
+  if (!resultValidateFiles.success) {
+    // If validation fails, return error messages
+    throw new BadRequestError(resultValidateFiles.error.errors);
   }
 
   next();

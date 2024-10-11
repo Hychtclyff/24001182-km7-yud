@@ -830,5 +830,20 @@
             "Body-colored power-adjustable mirrors",
             "Advanced airbag system"
         ]
+    },
+    {
+        "id": "2c4d65b5-4c76-43c1-8372-059d00d7ae3d",
+        "plate": "BA-2206",
+        "manufacture": "Subaru",
+        "model": "BRZ",
+        "rentPerDay": 200000,
+        "capacity": 4,
+        "description": "BRZIKO",
+        "availableAt": "2022-03-23T15:49:05.563Z",
+        "transmission": "Manual",
+        "available": true,
+        "type": "BRZ",
+        "year": "2024",
+        "image": "https://ik.imagekit.io/Quls/car17.min_v4Iiko___.jpg"
     }
 ]

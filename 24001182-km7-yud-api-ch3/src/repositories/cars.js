@@ -66,7 +66,7 @@ exports.getCars = (
 };
 
 exports.getCarById = (id) => {
-  // find student by id
+  // find car by id
 
   const car = cars.find((car) => car.id == id);
   return car;
@@ -86,7 +86,7 @@ exports.createCar = (data) => {
       ...data,
     };
 
-    /* Add data to current array students */
+    /* Add data to current array cars */
     cars.push(newCar);
 
     // Save the latest data to json
