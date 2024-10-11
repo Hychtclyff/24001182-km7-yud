@@ -1,3 +1,4 @@
+require("dotenv").config(); // To enable .env called
 const express = require("express"); // Import express with non-module
 require("express-async-errors");
 const router = require("./routes");
@@ -20,7 +21,6 @@ app.use(
 
 // All routes define here
 app.use("/", router);
-
 
 // This function is for 404 handle URL
 app.use("*", notFoundURLHandler);
