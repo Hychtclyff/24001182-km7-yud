@@ -5,26 +5,14 @@ exports.validateCreateManufacture = (req, res, next) => {
   req.body.year_establish = parseInt(req.body.year_establish);
 
   const validateBody = z.object({
-    manufacture_name: z.string().min(1, "Nama manufaktur tidak boleh kosong"),
-    manufacture_region: z
-      .string()
-      .min(1, "Wilayah manufaktur tidak boleh kosong"),
-    year_establish: z
-      .number()
-      .int()
-      .positive()
-      .max(
-        new Date().getFullYear(),
-        "Tahun harus tidak lebih dari tahun sekarang"
-      ),
+    manufacture_name: z.string(),
+    manufacture_region: z.string(),
+    year_establish: z.number().int().positive(),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();
@@ -49,22 +37,12 @@ exports.validateUpdateManufacture = (req, res, next) => {
   const validateBody = z.object({
     manufacture_name: z.string(),
     manufacture_region: z.string(),
-    year_establish: z
-      .number()
-      .int()
-      .positive()
-      .max(
-        new Date().getFullYear(),
-        "Tahun harus tidak lebih dari tahun sekarang"
-      ),
+    year_establish: z.number().int().positive(),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();

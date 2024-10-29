@@ -2,16 +2,11 @@ const { z } = require("zod");
 const { BadRequestError } = require("../utils/request");
 
 exports.validateCreateTransmission = (req, res, next) => {
-  const validateBody = z.object({
-    transmission_name: z.string().min(1, "Nama transmisi tidak boleh kosong"),
-  });
+  const validateBody = z.object({});
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();
@@ -36,13 +31,9 @@ exports.validateUpdateTransmission = (req, res, next) => {
     transmission_name: z.string().optional(),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res.status(400).json({
-      message: "Invalid request body",
-      errors: error.errors,
-    });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();

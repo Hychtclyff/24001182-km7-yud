@@ -3,17 +3,12 @@ const { BadRequestError } = require("../utils/request");
 
 exports.validateCreateAvailable = (req, res, next) => {
   const validateBody = z.object({
-    available_status: z
-      .string()
-      .min(1, "Status ketersediaan tidak boleh kosong"),
+    available_status: z.string(),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();
@@ -34,19 +29,13 @@ exports.validateGetAvailableById = (req, res, next) => {
 
 exports.validateUpdateAvailable = (req, res, next) => {
   const validateBody = z.object({
-    available_status: z
-      .string()
-      .min(1, "Status ketersediaan tidak boleh kosong"),
+    available_status: z.string(),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
-
   next();
 };
 

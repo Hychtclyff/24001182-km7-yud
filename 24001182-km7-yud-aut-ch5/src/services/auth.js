@@ -4,6 +4,19 @@ const userRepository = require("../repositories/users");
 const { imageUpload } = require("../utils/image-kit");
 const { Unauthorized } = require("../utils/request");
 
+exports.updateProfile = async (id, data) => {
+  const existingUsers = await userRepository.getUserById(id);
+  if (!existingUsers) {
+    throw new NotFoundError("Users is Not Found!");
+  }
+
+  const updatedUsers = await userRepository.updateUsers(id, data);
+  if (!updatedUsers) {
+    throw new InternalServerError(["Failed to update Users status!"]);
+  }
+  delete updatedUsers.password;
+  return updatedUsers;
+};
 exports.register = async (data, file) => {
   // if there are any file (profile picture)
   if (file.profile_picture) {

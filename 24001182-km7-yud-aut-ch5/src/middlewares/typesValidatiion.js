@@ -6,12 +6,9 @@ exports.validateCreateType = (req, res, next) => {
     type_name: z.string().min(1, "Nama tipe tidak boleh kosong"),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
 
   next();
@@ -36,14 +33,10 @@ exports.validateUpdateType = (req, res, next) => {
     type_name: z.string().min(1, "Nama tipe tidak boleh kosong"),
   });
 
-  try {
-    validateBody.parse(req.body);
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Invalid data", errors: error.errors });
+  const resultValidateBody = validateBody.safeParse(req.body);
+  if (!resultValidateBody.success) {
+    throw new BadRequestError(resultValidateBody.error.errors);
   }
-
   next();
 };
 

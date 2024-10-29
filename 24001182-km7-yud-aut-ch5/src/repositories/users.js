@@ -42,3 +42,15 @@ exports.getUserById = async (id) => {
   const serializedStudents = JSONBigInt.stringify(user);
   return JSONBigInt.parse(serializedStudents);
 };
+
+exports.updateUsers = async (id, data) => {
+  const updateUser = await prisma.users.update({
+    where: {
+      id,
+    },
+    data,
+  });
+
+  const serializedType = JSONBigInt.stringify(updateUser);
+  return JSONBigInt.parse(serializedType);
+};

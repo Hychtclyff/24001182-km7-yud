@@ -4,6 +4,6 @@ CREATE TABLE users (
 	email varchar NOT NULL,
 	"password" varchar NOT NULL,
 	profile_picture varchar NULL,
-	role_id int DEFAULT 2 NOT NULL,
+	role_id int DEFAULT 3 NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY (id)
 );
